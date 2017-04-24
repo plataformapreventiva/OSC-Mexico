@@ -42,22 +42,23 @@ organizaciones <- organizaciones %>%
 ###################
 # Batch Geocode
 ###################
-domicilios = organizaciones$domicilio_fiscal
+domicilios = unique(organizaciones$domicilio_fiscal)
 domicilios = paste0(domicilios, ", México")
-infile <- "input"
-
-geocode_vector_process(infile,domicilios)
-geocoded <- readRDS("input_temp_geocoded.rds")
+coordset <- geocode_url(domicilios, auth="standard_api", 
+                        privkey="",
+                        clean=TRUE, add_date='today', verbose=TRUE)
 
 # Add the latitude and longitude to the main data
-organizaciones$lat <- geocoded$lat
-organizaciones$long <- geocoded$lat
-organizaciones$accuracy <- geocoded$accuracy
+organizaciones$lat <- coordset$lat
+organizaciones$long <- coordset$lng
+organizaciones$accuracy <- coordset$location_type
+organizaciones$accuracy <- coordset$location_type
+organizaciones$status <- coordset$status
+organizaciones$formatted_address <- coordset$formatted_address 
 
-
-
-
-
+# quitar cp y el número
+# tomar algunas comas
+write.csv(organizaciones,"organizaciones.csv")
 
 
 

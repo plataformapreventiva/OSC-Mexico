@@ -1,10 +1,15 @@
 .packages = c('lubridate', 'magrittr', 'ggvis', 'dplyr', 'tidyr', 'readr', 'rvest',
               'ggplot2', 'stringr', 'ggthemes', 'googleVis', 'shiny', 'tibble', 'vcd', 'vcdExtra',
-              'GGally','curl','gdata','readxl','ggmap')
+              'GGally','curl','gdata','readxl','ggmap','devtools')
 
 # Install CRAN packages (if not already installed)
 .inst <- .packages %in% installed.packages()
 if(length(.packages[!.inst]) > 0) install.packages(.packages[!.inst])
+
+# Install github repos
+
+install_github("DerekYves/placement")
+library(placement)
 
 # Load packages into session 
 lapply(.packages, require, character.only=TRUE)
